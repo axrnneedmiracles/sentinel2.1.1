@@ -65,7 +65,7 @@ export default function Home() {
           <div className="w-full max-w-3xl text-center space-y-2">
               <h2 className="text-4xl md:text-5xl font-extrabold text-primary-foreground">Guard Your Clicks</h2>
               <p className="text-lg md:text-xl text-muted-foreground">
-                  Paste any suspicious message. Our AI sentinel will analyze links for threats in real-time.
+                  Paste the message here.
               </p>
           </div>
           <ScanForm onScan={handleScan} loading={status === 'scanning'} />
