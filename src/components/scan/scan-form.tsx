@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Search, ClipboardPaste } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useIsMounted } from '@/hooks/use-is-mounted';
 
 interface ScanFormProps {
   onScan: (text: string) => void;
@@ -14,6 +15,7 @@ interface ScanFormProps {
 export function ScanForm({ onScan, loading }: ScanFormProps) {
   const [text, setText] = useState('');
   const { toast } = useToast();
+  const isMounted = useIsMounted();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +23,7 @@ export function ScanForm({ onScan, loading }: ScanFormProps) {
   };
   
   const handlePaste = async () => {
+    if(!isMounted) return;
     try {
       const clipboardText = await navigator.clipboard.readText();
       setText(clipboardText);

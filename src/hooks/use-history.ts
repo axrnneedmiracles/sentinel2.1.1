@@ -2,17 +2,17 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { ScanResult, ScanHistoryItem } from '@/lib/types';
+import { useIsMounted } from './use-is-mounted';
 
 const HISTORY_KEY = 'sentinel-scan-history';
 const MAX_HISTORY_ITEMS = 50;
 
 export function useHistory() {
   const [history, setHistory] = useState<ScanHistoryItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isMounted = useIsMounted();
 
   useEffect(() => {
-    // This check ensures we only access localStorage on the client side.
-    if (typeof window !== 'undefined') {
+    if (isMounted) {
       try {
         const storedHistory = window.localStorage.getItem(HISTORY_KEY);
         if (storedHistory) {
@@ -21,9 +21,8 @@ export function useHistory() {
       } catch (error) {
         console.error('Could not load history from localStorage', error);
       }
-      setIsLoaded(true);
     }
-  }, []);
+  }, [isMounted]);
 
   const addHistoryItem = useCallback((item: ScanResult) => {
     if (item.error) return; // Don't save scans that resulted in an error
@@ -36,23 +35,27 @@ export function useHistory() {
 
     setHistory(prevHistory => {
       const updatedHistory = [newItem, ...prevHistory].slice(0, MAX_HISTORY_ITEMS);
-      try {
-        window.localStorage.setItem(HISTORY_KEY, JSON.stringify(updatedHistory));
-      } catch (error) {
-        console.error('Could not save history to localStorage', error);
+      if (isMounted) {
+        try {
+          window.localStorage.setItem(HISTORY_KEY, JSON.stringify(updatedHistory));
+        } catch (error) {
+          console.error('Could not save history to localStorage', error);
+        }
       }
       return updatedHistory;
     });
-  }, []);
+  }, [isMounted]);
   
   const clearHistory = useCallback(() => {
     setHistory([]);
-    try {
-        window.localStorage.removeItem(HISTORY_KEY);
-    } catch (error) {
-        console.error('Could not clear history from localStorage', error);
+    if(isMounted) {
+      try {
+          window.localStorage.removeItem(HISTORY_KEY);
+      } catch (error) {
+          console.error('Could not clear history from localStorage', error);
+      }
     }
-  }, []);
+  }, [isMounted]);
 
-  return { history, addHistoryItem, clearHistory, isLoaded };
+  return { history, addHistoryItem, clearHistory, isLoaded: isMounted };
 }
