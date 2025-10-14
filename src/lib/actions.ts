@@ -1,8 +1,6 @@
 'use server';
 
-import { assessLinkRisk } from '@/ai/flows/link-risk-assessment';
-import { maliciousLinkDetection } from '@/ai/flows/malicious-link-detection';
-import { linkSafetyFeedback } from '@/ai/flows/link-safety-feedback';
+import { analyzeLink } from '@/ai/flows/unified-link-analysis';
 import type { ScanResult } from '@/lib/types';
 
 function extractUrl(text: string): string | null {
@@ -33,27 +31,16 @@ export async function scanMessage(text: string): Promise<ScanResult> {
     }
 
     try {
-        // Run AI checks in parallel for performance
-        const [riskAssessment, maliciousDetection] = await Promise.all([
-            assessLinkRisk({ url }),
-            maliciousLinkDetection({ url })
-        ]);
-
-        const isMalicious = maliciousDetection.isMalicious || riskAssessment.isMalicious;
-        let feedback = null;
-        if (isMalicious) {
-            // Only call for feedback if a threat is detected
-            feedback = await linkSafetyFeedback({ url, isScam: true });
-        }
+        // Use the new unified flow for a faster, single-call analysis
+        const analysisResult = await analyzeLink({ url });
         
         const combinedResult: ScanResult = {
             url,
-            isMalicious,
-            // Average the scores for a more balanced assessment
-            riskScore: Math.round((riskAssessment.riskScore + maliciousDetection.riskScore * 100) / 2),
-            explanation: maliciousDetection.explanation || riskAssessment.reason,
-            recommendedActions: maliciousDetection.recommendedActions || riskAssessment.solution,
-            advice: feedback?.advice,
+            isMalicious: analysisResult.isMalicious,
+            riskScore: analysisResult.riskScore,
+            explanation: analysisResult.explanation,
+            recommendedActions: analysisResult.recommendedActions,
+            advice: analysisResult.advice,
         };
 
         return combinedResult;
