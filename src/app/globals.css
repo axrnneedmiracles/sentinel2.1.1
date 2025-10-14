@@ -32,27 +32,27 @@
   }
  
   .dark {
-    --background: 234 60% 30%;
-    --foreground: 0 0% 98%;
-    --card: 234 50% 35%;
-    --card-foreground: 0 0% 98%;
-    --popover: 234 60% 25%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 261 51% 54%;
-    --primary-foreground: 0 0% 98%;
+    --background: 224 71% 4%; /* Deep Blue */
+    --foreground: 210 40% 98%;
+    --card: 260 50% 15%; /* Dark Purple for cards */
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 261 80% 68%; /* Vibrant Purple */
+    --primary-foreground: 210 40% 98%;
     --secondary: 261 51% 44%;
     --secondary-foreground: 0 0% 98%;
     --muted: 261 51% 34%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 174 60% 37%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 180 80% 45%; /* Teal */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 261 51% 44%;
-    --input: 261 51% 44%;
-    --ring: 174 60% 47%;
-    --chart-1: 261 51% 54%;
-    --chart-2: 174 60% 37%;
+    --border: 261 51% 34%;
+    --input: 261 51% 24%;
+    --ring: 180 80% 55%;
+    --chart-1: 261 80% 68%;
+    --chart-2: 180 80% 45%;
     --chart-3: 0 72% 51%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;

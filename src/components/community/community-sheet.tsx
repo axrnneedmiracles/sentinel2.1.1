@@ -51,7 +51,7 @@ const mockReports = [
 export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-lg bg-card/80 backdrop-blur-lg border-primary/20">
+      <SheetContent className="w-full sm:max-w-lg bg-card/30 backdrop-blur-lg border-primary/20">
           <SheetHeader className="text-left">
             <SheetTitle className="flex items-center gap-2">
               <Users className="text-primary" />
@@ -93,7 +93,7 @@ export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
               ))}
             </div>
           </ScrollArea>
-           <div className="absolute bottom-0 left-0 right-0 p-4 bg-card/80 backdrop-blur-lg border-t border-primary/20">
+           <div className="absolute bottom-0 left-0 right-0 p-4 bg-card/30 backdrop-blur-lg border-t border-primary/20">
              <Button className="w-full" disabled>Submit a Report (Coming Soon)</Button>
            </div>
       </SheetContent>

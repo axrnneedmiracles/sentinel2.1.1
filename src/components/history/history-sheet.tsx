@@ -25,7 +25,7 @@ export function HistorySheet({ open, onOpenChange }: HistorySheetProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md bg-card/80 backdrop-blur-lg border-primary/20">
+      <SheetContent className="w-full sm:max-w-md bg-card/30 backdrop-blur-lg border-primary/20">
         <SheetHeader className="text-left">
           <SheetTitle className="flex items-center gap-2">
             <History className="text-primary" />
@@ -65,7 +65,7 @@ export function HistorySheet({ open, onOpenChange }: HistorySheetProps) {
             )}
           </div>
         </ScrollArea>
-        <SheetFooter className="absolute bottom-0 left-0 right-0 p-4 bg-card/80 backdrop-blur-lg border-t border-primary/20">
+        <SheetFooter className="absolute bottom-0 left-0 right-0 p-4 bg-card/30 backdrop-blur-lg border-t border-primary/20">
           <Button variant="destructive" onClick={clearHistory} disabled={history.length === 0} className="w-full">
             <Trash2 className="mr-2 h-4 w-4" />
             Clear History

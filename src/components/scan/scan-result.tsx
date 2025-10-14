@@ -13,7 +13,7 @@ interface ScanResultProps {
 }
 
 const ResultCard: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => (
-  <Card className={`w-full max-w-3xl bg-card/50 backdrop-blur-lg border-2 shadow-2xl animate-in fade-in zoom-in-95 ${className}`}>
+  <Card className={`w-full max-w-3xl bg-card/30 backdrop-blur-lg border-2 shadow-2xl animate-in fade-in zoom-in-95 ${className}`}>
     {children}
   </Card>
 );
