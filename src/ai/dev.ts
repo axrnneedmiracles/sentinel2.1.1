@@ -1,1 +1,6 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/link-risk-assessment.ts';
+import '@/ai/flows/malicious-link-detection.ts';
+import '@/ai/flows/link-safety-feedback.ts';
