@@ -63,7 +63,7 @@ export default function Home() {
         />
         <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-start gap-8">
           <div className="w-full max-w-3xl text-center space-y-2">
-              <h2 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent py-2 bg-[length:200%_auto] animate-background-pan">SENTINEL SCAN</h2>
+              <h2 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent py-2 bg-[length:200%_auto] animate-background-pan" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--accent) / 0.5)' }}>SENTINEL SCAN</h2>
               <p className="text-lg md:text-xl text-muted-foreground">
                   Paste the message here.
               </p>
