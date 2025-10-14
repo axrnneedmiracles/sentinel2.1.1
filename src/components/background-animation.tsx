@@ -20,9 +20,9 @@ export function BackgroundAnimation() {
   return (
     <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden bg-background">
       <div 
-        className="absolute inset-0 h-full w-full opacity-20 transition-opacity duration-300"
+        className="absolute inset-0 h-full w-full opacity-30 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, hsla(var(--primary), 0.3), transparent 40%)`,
+          background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, hsla(var(--primary), 0.3), transparent 40%)`,
         }}
       ></div>
       <div className="absolute inset-0 h-full w-full bg-[radial-gradient(hsla(var(--border)_/_0.5)_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-10"></div>
