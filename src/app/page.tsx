@@ -72,7 +72,7 @@ export default function Home() {
           <ScanResultDisplay result={result} status={status} />
         </main>
         <footer className="text-center p-4 text-muted-foreground text-sm">
-          Powered by Genkit AI. Stay safe online.
+          POWERED BY AXRN. Stay Safe Online.
         </footer>
       </div>
 
