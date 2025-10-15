@@ -97,6 +97,14 @@ export default function Home() {
               )}
     
               <ScanResultDisplay result={result} status={status} />
+              
+              {status === 'success' || status === 'error' ? (
+                <Button onClick={handleReset} variant="outline" className="bg-card/50 backdrop-blur-sm cursor-target">
+                  <HomeIcon className="mr-2 h-4 w-4"/>
+                  Home
+                </Button>
+              ) : null}
+
               {status === 'idle' && <MagicBento onCardClick={setCurrentView} />}
             </>
         );
