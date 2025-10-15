@@ -14,6 +14,7 @@ import { useHistory } from '@/hooks/use-history';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { HomeIcon } from 'lucide-react';
+import MagicBento from '@/components/ui/magic-bento';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
 
@@ -96,6 +97,7 @@ export default function Home() {
           )}
 
           <ScanResultDisplay result={result} status={status} />
+          {status === 'idle' && <MagicBento />}
         </main>
         <footer className="text-center p-4 text-muted-foreground text-sm">
           POWERED BY AXRN. Stay Safe Online.
@@ -104,7 +106,4 @@ export default function Home() {
 
       <HistorySheet open={historyOpen} onOpenChange={setHistoryOpen} />
       <CommunitySheet open={communityOpen} onOpenChange={setCommunityOpen} />
-      <AboutSheet open={aboutOpen} onOpenChange={setAboutOpen} />
-    </div>
-  );
-}
+      <AboutSheet open={aboutOpen} onOpenChange={setAbout

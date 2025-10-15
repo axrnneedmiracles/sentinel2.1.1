@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from '@/components/ui/sheet';
-import { Info, User, Mail, Phone } from 'lucide-react';
+import { Info, Mail, Phone } from 'lucide-react';
 import { Separator } from '../ui/separator';
 
 interface AboutSheetProps {
