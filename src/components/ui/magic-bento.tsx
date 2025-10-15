@@ -180,8 +180,8 @@ const ParticleCard = ({
         gsap.to(element, {
           rotateX: 5,
           rotateY: 5,
-          duration: 0.3,
-          ease: 'power2.out',
+          duration: 0.5,
+          ease: 'power3.out',
           transformPerspective: 1000
         });
       }
@@ -195,8 +195,8 @@ const ParticleCard = ({
         gsap.to(element, {
           rotateX: 0,
           rotateY: 0,
-          duration: 0.3,
-          ease: 'power2.out'
+          duration: 0.5,
+          ease: 'power3.out'
         });
       }
 
@@ -204,8 +204,8 @@ const ParticleCard = ({
         gsap.to(element, {
           x: 0,
           y: 0,
-          duration: 0.3,
-          ease: 'power2.out'
+          duration: 0.5,
+          ease: 'power3.out'
         });
       }
     };
@@ -220,13 +220,13 @@ const ParticleCard = ({
       const centerY = rect.height / 2;
 
       if (enableTilt) {
-        const rotateX = ((y - centerY) / centerY) * -10;
-        const rotateY = ((x - centerX) / centerX) * 10;
+        const rotateX = ((y - centerY) / centerY) * -8;
+        const rotateY = ((x - centerX) / centerX) * 8;
 
         gsap.to(element, {
           rotateX,
           rotateY,
-          duration: 0.1,
+          duration: 0.4,
           ease: 'power2.out',
           transformPerspective: 1000
         });
@@ -716,13 +716,13 @@ const MagicBento = ({
                     const centerY = rect.height / 2;
 
                     if (enableTilt) {
-                      const rotateX = ((y - centerY) / centerY) * -10;
-                      const rotateY = ((x - centerX) / centerX) * 10;
+                      const rotateX = ((y - centerY) / centerY) * -8;
+                      const rotateY = ((x - centerX) / centerX) * 8;
 
                       gsap.to(el, {
                         rotateX,
                         rotateY,
-                        duration: 0.1,
+                        duration: 0.4,
                         ease: 'power2.out',
                         transformPerspective: 1000
                       });
@@ -748,8 +748,8 @@ const MagicBento = ({
                       gsap.to(el, {
                         rotateX: 0,
                         rotateY: 0,
-                        duration: 0.3,
-                        ease: 'power2.out'
+                        duration: 0.5,
+                        ease: 'power3.out'
                       });
                     }
 
@@ -757,8 +757,8 @@ const MagicBento = ({
                       gsap.to(el, {
                         x: 0,
                         y: 0,
-                        duration: 0.3,
-                        ease: 'power2.out'
+                        duration: 0.5,
+                        ease: 'power3.out'
                       });
                     }
                   };
