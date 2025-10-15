@@ -15,8 +15,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { HomeIcon } from 'lucide-react';
 import MagicBento from '@/components/ui/magic-bento';
+import { HistoryPage } from '@/components/history/history-page';
+import { CommunityPage } from '@/components/community/community-page';
+import { AboutPage } from '@/components/about/about-page';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
+type View = 'home' | 'history' | 'community' | 'about';
 
 export default function Home() {
   const [status, setStatus] = useState<ScanStatus>('idle');
@@ -26,6 +30,8 @@ export default function Home() {
   const [aboutOpen, setAboutOpen] = useState(false);
   const { addHistoryItem } = useHistory();
   const { toast } = useToast();
+  const [currentView, setCurrentView] = useState<View>('home');
+
 
   const handleScan = async (text: string) => {
     if (!text.trim()) return;
@@ -61,7 +67,41 @@ export default function Home() {
   const handleReset = () => {
     setStatus('idle');
     setResult(null);
+    setCurrentView('home');
   };
+  
+  const renderContent = () => {
+    switch (currentView) {
+      case 'history':
+        return <HistoryPage />;
+      case 'community':
+        return <CommunityPage />;
+      case 'about':
+        return <AboutPage />;
+      case 'home':
+      default:
+        return (
+            <>
+              {status === 'idle' ? (
+                <>
+                  <div className="w-full max-w-3xl text-center space-y-2">
+                      <h2 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent py-2 bg-[length:200%_auto] animate-background-pan" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--accent) / 0.5)' }}>SENTINEL SCAN</h2>
+                      <p className="text-lg md:text-xl text-muted-foreground">
+                          Paste the message here.
+                      </p>
+                  </div>
+                  <ScanForm onScan={handleScan} loading={status === 'scanning'} />
+                </>
+              ) : (
+                 <ScanForm onScan={handleScan} loading={status === 'scanning'} />
+              )}
+    
+              <ScanResultDisplay result={result} status={status} />
+              {status === 'idle' && <MagicBento onCardClick={setCurrentView} />}
+            </>
+        );
+    }
+  }
 
   return (
     <div className={`min-h-screen w-full relative transition-colors duration-1000 ${getBackgroundColor()}`}>
@@ -73,7 +113,7 @@ export default function Home() {
           onAboutClick={() => setAboutOpen(true)}
         />
         <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-start gap-12">
-          {status !== 'idle' && (
+          {currentView !== 'home' && (
             <div className="w-full max-w-3xl flex justify-start">
                 <Button onClick={handleReset} variant="outline" className="bg-card/50 backdrop-blur-sm cursor-target">
                     <HomeIcon className="mr-2 h-4 w-4"/>
@@ -81,23 +121,7 @@ export default function Home() {
                 </Button>
             </div>
           )}
-          
-          {status === 'idle' ? (
-            <>
-              <div className="w-full max-w-3xl text-center space-y-2">
-                  <h2 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent py-2 bg-[length:200%_auto] animate-background-pan" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--accent) / 0.5)' }}>SENTINEL SCAN</h2>
-                  <p className="text-lg md:text-xl text-muted-foreground">
-                      Paste the message here.
-                  </p>
-              </div>
-              <ScanForm onScan={handleScan} loading={status === 'scanning'} />
-            </>
-          ) : (
-             <ScanForm onScan={handleScan} loading={status === 'scanning'} />
-          )}
-
-          <ScanResultDisplay result={result} status={status} />
-          {status === 'idle' && <MagicBento />}
+          {renderContent()}
         </main>
         <footer className="text-center p-4 text-muted-foreground text-sm">
           POWERED BY AXRN. Stay Safe Online.

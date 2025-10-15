@@ -9,40 +9,46 @@ const MOBILE_BREAKPOINT = 768;
 
 const cardData = [
   {
+    id: 'history',
     color: '#060010',
-    title: 'Analytics',
-    description: 'Track user behavior',
-    label: 'Insights'
+    title: 'Scan History',
+    description: 'Review your past scans and findings.',
+    label: 'History'
   },
   {
+    id: 'community',
     color: '#060010',
-    title: 'Dashboard',
-    description: 'Centralized data view',
-    label: 'Overview'
+    title: 'Community Reports',
+    description: 'See what other users are reporting.',
+    label: 'Community'
   },
   {
+    id: 'about',
     color: '#060010',
-    title: 'Collaboration',
-    description: 'Work together seamlessly',
-    label: 'Teamwork'
+    title: 'About Sentinel',
+    description: 'Learn more about the project and its creator.',
+    label: 'About'
   },
   {
+    id: 'realtime',
     color: '#060010',
-    title: 'Automation',
-    description: 'Streamline workflows',
-    label: 'Efficiency'
+    title: 'Real-time Analysis',
+    description: 'Instant feedback on any link.',
+    label: 'Analysis'
   },
   {
+    id: 'protection',
     color: '#060010',
-    title: 'Integration',
-    description: 'Connect favorite tools',
-    label: 'Connectivity'
-  },
-  {
-    color: '#060010',
-    title: 'Security',
-    description: 'Enterprise-grade protection',
+    title: 'Proactive Protection',
+    description: 'Stay ahead of online threats.',
     label: 'Protection'
+  },
+  {
+    id: 'ai',
+    color: '#060010',
+    title: 'Powered by AI',
+    description: 'Leveraging advanced AI for security.',
+    label: 'AI'
   }
 ];
 
@@ -90,6 +96,7 @@ interface ParticleCardProps {
     enableTilt?: boolean;
     clickEffect?: boolean;
     enableMagnetism?: boolean;
+    onClick?: () => void;
 }
 
 const ParticleCard = ({
@@ -101,7 +108,8 @@ const ParticleCard = ({
   glowColor = DEFAULT_GLOW_COLOR,
   enableTilt = true,
   clickEffect = false,
-  enableMagnetism = false
+  enableMagnetism = false,
+  onClick
 }: ParticleCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement[]>([]);
@@ -259,6 +267,9 @@ const ParticleCard = ({
     };
 
     const handleClick = (e: MouseEvent) => {
+        if(onClick) {
+            onClick();
+        }
       if (!clickEffect) return;
 
       const rect = element.getBoundingClientRect();
@@ -316,7 +327,7 @@ const ParticleCard = ({
       element.removeEventListener('click', handleClick);
       clearAllParticles();
     };
-  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor]);
+  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, onClick]);
 
   return (
     <div
@@ -494,6 +505,8 @@ const useMobileDetection = () => {
   return isMobile;
 };
 
+type View = 'home' | 'history' | 'community' | 'about';
+
 interface MagicBentoProps {
     textAutoHide?: boolean;
     enableStars?: boolean;
@@ -506,6 +519,7 @@ interface MagicBentoProps {
     glowColor?: string;
     clickEffect?: boolean;
     enableMagnetism?: boolean;
+    onCardClick: (view: View) => void;
 }
 
 const MagicBento = ({
@@ -519,11 +533,18 @@ const MagicBento = ({
   enableTilt = false,
   glowColor = DEFAULT_GLOW_COLOR,
   clickEffect = true,
-  enableMagnetism = true
+  enableMagnetism = true,
+  onCardClick
 }: MagicBentoProps) => {
   const gridRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
+
+  const handleCardClick = (id: string) => {
+    if(id === 'history' || id === 'community' || id === 'about') {
+      onCardClick(id);
+    }
+  };
 
   return (
     <>
@@ -693,6 +714,7 @@ const MagicBento = ({
                   enableTilt={enableTilt}
                   clickEffect={clickEffect}
                   enableMagnetism={enableMagnetism}
+                  onClick={() => handleCardClick(card.id)}
                 >
                   <div className="card__header flex justify-between gap-3 relative text-white">
                     <span className="card__label text-base">{card.label}</span>
@@ -716,6 +738,7 @@ const MagicBento = ({
                 key={index}
                 className={baseClassName}
                 style={cardStyle}
+                onClick={() => handleCardClick(card.id)}
                 ref={el => {
                   if (!el) return;
 
