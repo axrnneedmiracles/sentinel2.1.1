@@ -1,6 +1,8 @@
+
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { BackgroundAnimation } from '@/components/background-animation';
 import { Header } from '@/components/layout/header';
 import { ScanForm } from '@/components/scan/scan-form';
@@ -84,9 +86,19 @@ export default function Home() {
             <>
               {status === 'idle' ? (
                 <>
-                  <div className="w-full max-w-3xl text-center space-y-2">
-                      <h2 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent py-2 bg-[length:200%_auto] animate-background-pan" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--accent) / 0.5)' }}>SENTINEL SCAN</h2>
-                      <p className="text-lg md:text-xl text-muted-foreground">
+                  <div className="relative w-full max-w-3xl text-center space-y-2">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <Image
+                          src="/logo.gif"
+                          alt="Background Logo"
+                          width={150}
+                          height={150}
+                          unoptimized
+                          className="opacity-10"
+                        />
+                      </div>
+                      <h2 className="relative text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent py-2 bg-[length:200%_auto] animate-background-pan" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--accent) / 0.5)' }}>SENTINEL SCAN</h2>
+                      <p className="relative text-lg md:text-xl text-muted-foreground">
                           Paste the message here.
                       </p>
                   </div>
