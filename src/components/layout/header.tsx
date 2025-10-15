@@ -20,7 +20,7 @@ export function Header({ onHistoryClick, onCommunityClick }: HeaderProps) {
             duration={1}
             speed={0.3}
             scrambleChars="*!#$:_"
-            className="text-2xl font-bold tracking-wider text-primary-foreground"
+            className="text-2xl font-bold tracking-widest text-primary-foreground"
         >
             SENTINEL SCAN
         </ScrambledText>
