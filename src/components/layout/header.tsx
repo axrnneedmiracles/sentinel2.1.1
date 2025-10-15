@@ -16,11 +16,10 @@ export function Header({ onHistoryClick, onCommunityClick, onAboutClick }: Heade
     <header className="container mx-auto p-4 flex justify-between items-center">
       <div className="flex items-center gap-3 cursor-target">
         {/* 
-          Replace this placeholder with the public URL of your GIF from Firebase Storage.
-          Make sure the 'width' and 'height' props match your GIF's dimensions.
+          Your logo.gif file in the `public` directory will be displayed here.
         */}
         <Image
-          src="https://placehold.co/32x32/8400ff/FFFFFF/png?text=LOGO" 
+          src="/logo.gif" 
           alt="Sentinel Scan Logo"
           width={32}
           height={32}
