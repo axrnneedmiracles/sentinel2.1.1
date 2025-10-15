@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -49,7 +50,7 @@ export function ScanForm({ onScan, loading }: ScanFormProps) {
         <Textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Paste a suspicious message here..."
+          placeholder="Paste your suspicious message here..."
           className="bg-card/30 backdrop-blur-sm border-primary/30 rounded-lg shadow-lg p-4 pr-12 h-36 text-base transition-all focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent cursor-target"
           disabled={loading}
         />
