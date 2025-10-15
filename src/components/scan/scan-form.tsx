@@ -50,14 +50,14 @@ export function ScanForm({ onScan, loading }: ScanFormProps) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Paste a suspicious message here..."
-          className="bg-card/30 backdrop-blur-sm border-primary/30 rounded-lg shadow-lg p-4 pr-12 h-36 text-base transition-all focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+          className="bg-card/30 backdrop-blur-sm border-primary/30 rounded-lg shadow-lg p-4 pr-12 h-36 text-base transition-all focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent cursor-target"
           disabled={loading}
         />
         <Button 
             type="button" 
             variant="ghost" 
             size="icon" 
-            className="absolute top-3 right-3 text-muted-foreground hover:text-primary-foreground hover:bg-primary/50"
+            className="absolute top-3 right-3 text-muted-foreground hover:text-primary-foreground hover:bg-primary/50 cursor-target"
             onClick={handlePaste}
             disabled={loading}
             aria-label="Paste from clipboard"
@@ -67,7 +67,7 @@ export function ScanForm({ onScan, loading }: ScanFormProps) {
       </div>
       <Button
         type="submit"
-        className="w-full text-lg font-bold bg-primary hover:bg-primary/90 rounded-lg shadow-lg h-14 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100"
+        className="w-full text-lg font-bold bg-primary hover:bg-primary/90 rounded-lg shadow-lg h-14 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 cursor-target"
         disabled={loading || !text.trim()}
       >
         {loading ? (

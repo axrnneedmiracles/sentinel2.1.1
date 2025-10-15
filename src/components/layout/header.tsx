@@ -13,7 +13,7 @@ interface HeaderProps {
 export function Header({ onHistoryClick, onCommunityClick }: HeaderProps) {
   return (
     <header className="container mx-auto p-4 flex justify-between items-center">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 cursor-target">
         <SentinelShield className="w-8 h-8 text-primary" />
         <ScrambledText
             radius={120}
@@ -26,11 +26,11 @@ export function Header({ onHistoryClick, onCommunityClick }: HeaderProps) {
         </ScrambledText>
       </div>
       <div className="flex items-center gap-1">
-        <Button variant="ghost" size="icon" onClick={onHistoryClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors">
+        <Button variant="ghost" size="icon" onClick={onHistoryClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
           <History />
           <span className="sr-only">Scan History</span>
         </Button>
-        <Button variant="ghost" size="icon" onClick={onCommunityClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors">
+        <Button variant="ghost" size="icon" onClick={onCommunityClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
           <Users />
           <span className="sr-only">Community</span>
         </Button>
