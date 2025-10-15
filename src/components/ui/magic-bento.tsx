@@ -28,27 +28,6 @@ const cardData = [
     title: 'About Sentinel',
     description: 'Learn more about the project and its creator.',
     label: 'About'
-  },
-  {
-    id: 'realtime',
-    color: '#060010',
-    title: 'Real-time Analysis',
-    description: 'Instant feedback on any link.',
-    label: 'Analysis'
-  },
-  {
-    id: 'protection',
-    color: '#060010',
-    title: 'Proactive Protection',
-    description: 'Stay ahead of online threats.',
-    label: 'Protection'
-  },
-  {
-    id: 'ai',
-    color: '#060010',
-    title: 'Powered by AI',
-    description: 'Leveraging advanced AI for security.',
-    label: 'AI'
   }
 ];
 
@@ -579,22 +558,7 @@ const MagicBento = ({
           
           @media (min-width: 1024px) {
             .card-responsive {
-              grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .card-responsive .card:nth-child(3) {
-              grid-column: span 2;
-              grid-row: span 2;
-            }
-            
-            .card-responsive .card:nth-child(4) {
-              grid-column: 1 / span 2;
-              grid-row: 2 / span 2;
-            }
-            
-            .card-responsive .card:nth-child(6) {
-              grid-column: 4;
-              grid-row: 3;
+              grid-template-columns: repeat(3, 1fr);
             }
           }
           
@@ -688,7 +652,7 @@ const MagicBento = ({
       <BentoCardGrid gridRef={gridRef}>
         <div className="card-responsive grid gap-2">
           {cardData.map((card, index) => {
-            const baseClassName = `card flex flex-col justify-between relative aspect-[4/3] min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+            const baseClassName = `card flex flex-col justify-between relative aspect-square min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
               enableBorderGlow ? 'card--border-glow' : ''
             }`;
 
