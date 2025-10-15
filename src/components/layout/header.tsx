@@ -2,15 +2,16 @@
 
 import { SentinelShield } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { History, Users } from 'lucide-react';
+import { History, Users, Info } from 'lucide-react';
 import ScrambledText from './ScrambledText';
 
 interface HeaderProps {
   onHistoryClick: () => void;
   onCommunityClick: () => void;
+  onAboutClick: () => void;
 }
 
-export function Header({ onHistoryClick, onCommunityClick }: HeaderProps) {
+export function Header({ onHistoryClick, onCommunityClick, onAboutClick }: HeaderProps) {
   return (
     <header className="container mx-auto p-4 flex justify-between items-center">
       <div className="flex items-center gap-3 cursor-target">
@@ -33,6 +34,10 @@ export function Header({ onHistoryClick, onCommunityClick }: HeaderProps) {
         <Button variant="ghost" size="icon" onClick={onCommunityClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
           <Users />
           <span className="sr-only">Community</span>
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onAboutClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
+          <Info />
+          <span className="sr-only">About Us</span>
         </Button>
       </div>
     </header>

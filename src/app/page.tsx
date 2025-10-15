@@ -7,6 +7,7 @@ import { ScanForm } from '@/components/scan/scan-form';
 import { ScanResultDisplay } from '@/components/scan/scan-result';
 import { HistorySheet } from '@/components/history/history-sheet';
 import { CommunitySheet } from '@/components/community/community-sheet';
+import { AboutSheet } from '@/components/about/about-sheet';
 import { scanMessage } from '@/lib/actions';
 import type { ScanResult } from '@/lib/types';
 import { useHistory } from '@/hooks/use-history';
@@ -21,6 +22,7 @@ export default function Home() {
   const [result, setResult] = useState<ScanResult | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const { addHistoryItem } = useHistory();
   const { toast } = useToast();
 
@@ -67,6 +69,7 @@ export default function Home() {
         <Header 
           onHistoryClick={() => setHistoryOpen(true)} 
           onCommunityClick={() => setCommunityOpen(true)} 
+          onAboutClick={() => setAboutOpen(true)}
         />
         <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-start gap-12">
           {status !== 'idle' && (
@@ -101,6 +104,7 @@ export default function Home() {
 
       <HistorySheet open={historyOpen} onOpenChange={setHistoryOpen} />
       <CommunitySheet open={communityOpen} onOpenChange={setCommunityOpen} />
+      <AboutSheet open={aboutOpen} onOpenChange={setAboutOpen} />
     </div>
   );
 }
