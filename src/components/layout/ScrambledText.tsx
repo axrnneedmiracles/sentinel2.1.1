@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, CSSProperties, ReactNode } from 'react';
 import { gsap } from 'gsap';
-import { SplitText } from 'gsap/SplitText';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+import { SplitText } from 'gsap/SplitText.js';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin.js';
 
 gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
