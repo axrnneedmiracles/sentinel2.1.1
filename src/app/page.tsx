@@ -106,4 +106,7 @@ export default function Home() {
 
       <HistorySheet open={historyOpen} onOpenChange={setHistoryOpen} />
       <CommunitySheet open={communityOpen} onOpenChange={setCommunityOpen} />
-      <AboutSheet open={aboutOpen} onOpenChange={setAbout
+      <AboutSheet open={aboutOpen} onOpenChange={setAboutOpen} />
+    </div>
+  );
+}
