@@ -26,7 +26,8 @@ export function Header({ onHistoryClick, onCommunityClick, onAboutClick }: Heade
             SENTINEL SCAN
         </ScrambledText>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground hidden md:inline">Quick Access</span>
         <Button variant="ghost" size="icon" onClick={onHistoryClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
           <History />
           <span className="sr-only">Scan History</span>
