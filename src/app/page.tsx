@@ -97,19 +97,14 @@ export default function Home() {
               )}
     
               <ScanResultDisplay result={result} status={status} />
-              
-              {status === 'success' || status === 'error' ? (
-                <Button onClick={handleReset} variant="outline" className="bg-card/50 backdrop-blur-sm cursor-target">
-                  <HomeIcon className="mr-2 h-4 w-4"/>
-                  Home
-                </Button>
-              ) : null}
 
               {status === 'idle' && <MagicBento onCardClick={setCurrentView} />}
             </>
         );
     }
   }
+
+  const showHomeButton = currentView !== 'home' || (status !== 'idle' && status !== 'scanning');
 
   return (
     <div className={`min-h-screen w-full relative transition-colors duration-1000 ${getBackgroundColor()}`}>
@@ -121,7 +116,7 @@ export default function Home() {
           onAboutClick={() => setAboutOpen(true)}
         />
         <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-start gap-12">
-          {currentView !== 'home' && (
+          {showHomeButton && (
             <div className="w-full max-w-3xl flex justify-start">
                 <Button onClick={handleReset} variant="outline" className="bg-card/50 backdrop-blur-sm cursor-target">
                     <HomeIcon className="mr-2 h-4 w-4"/>
