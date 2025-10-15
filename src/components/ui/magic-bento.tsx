@@ -85,7 +85,7 @@ const ParticleCard = ({
   style,
   particleCount = DEFAULT_PARTICLE_COUNT,
   glowColor = DEFAULT_GLOW_COLOR,
-  enableTilt = true,
+  enableTilt = false,
   clickEffect = false,
   enableMagnetism = false,
   onClick
@@ -509,7 +509,7 @@ const MagicBento = ({
   disableAnimations = false,
   spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
   particleCount = DEFAULT_PARTICLE_COUNT,
-  enableTilt = true,
+  enableTilt = false,
   glowColor = DEFAULT_GLOW_COLOR,
   clickEffect = true,
   enableMagnetism = true,
