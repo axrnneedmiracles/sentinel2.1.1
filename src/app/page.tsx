@@ -99,7 +99,7 @@ export default function Home() {
                       </div>
                       <h2 className="relative text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-accent py-2 bg-[length:200%_auto] animate-background-pan" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--accent) / 0.5)' }}>SENTINEL SCAN</h2>
                       <p className="relative text-lg md:text-xl text-muted-foreground">
-                          Paste the message here.
+                          GRAVEYARD OF SCAMMERS
                       </p>
                   </div>
                   <ScanForm onScan={handleScan} loading={status === 'scanning'} />
