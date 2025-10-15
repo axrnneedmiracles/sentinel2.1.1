@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import LiquidEther from './background/liquid-ether';
 
 export function BackgroundAnimation() {
   const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 });
@@ -19,6 +20,24 @@ export function BackgroundAnimation() {
 
   return (
     <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden bg-background">
+      <LiquidEther
+        colors={['#673AB7', '#26A69A', '#1A237E']}
+        mouseForce={20}
+        cursorSize={100}
+        isViscous={false}
+        viscous={30}
+        iterationsViscous={32}
+        iterationsPoisson={32}
+        resolution={0.5}
+        isBounce={false}
+        autoDemo={true}
+        autoSpeed={0.5}
+        autoIntensity={2.2}
+        takeoverDuration={0.25}
+        autoResumeDelay={3000}
+        autoRampDuration={0.6}
+        className="opacity-20"
+      />
       <div 
         className="absolute inset-0 h-full w-full opacity-30 transition-opacity duration-300"
         style={{
