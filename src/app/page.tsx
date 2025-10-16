@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { HomeIcon } from 'lucide-react';
 import MagicBento from '@/components/ui/magic-bento';
 import { HistoryPage } from '@/components/history/history-page';
-import { CommunityPage } from '@/components/community/community-page';
+import { CommunityPage, type ReportFormData } from '@/components/community/community-page';
 import { AboutPage } from '@/components/about/about-page';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
@@ -33,7 +33,7 @@ export default function Home() {
   const { addHistoryItem } = useHistory();
   const { toast } = useToast();
   const [currentView, setCurrentView] = useState<View>('home');
-
+  const [prefilledReport, setPrefilledReport] = useState<Partial<ReportFormData> | null>(null);
 
   const handleScan = async (text: string) => {
     if (!text.trim()) return;
@@ -72,12 +72,24 @@ export default function Home() {
     setCurrentView('home');
   };
   
+  const handleWarnCommunity = () => {
+    if (result && result.isMalicious) {
+      setPrefilledReport({
+        title: 'Warning',
+        url: result.url,
+        rating: 1,
+        comment: '',
+      });
+      setCurrentView('community');
+    }
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'history':
         return <HistoryPage />;
       case 'community':
-        return <CommunityPage />;
+        return <CommunityPage prefilledReport={prefilledReport} onFormSubmit={() => setPrefilledReport(null)} />;
       case 'about':
         return <AboutPage />;
       case 'home':
@@ -108,7 +120,7 @@ export default function Home() {
                  <ScanForm onScan={handleScan} loading={status === 'scanning'} />
               )}
     
-              <ScanResultDisplay result={result} status={status} />
+              <ScanResultDisplay result={result} status={status} onWarnCommunity={handleWarnCommunity} />
 
               {status === 'idle' && <MagicBento onCardClick={setCurrentView} />}
             </>

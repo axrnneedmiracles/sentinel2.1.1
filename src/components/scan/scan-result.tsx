@@ -1,15 +1,18 @@
+
 'use client';
 
 import type { ScanResult } from '@/lib/types';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { RiskMeter } from './risk-meter';
-import { ShieldAlert, ShieldCheck, Info, AlertTriangle, LifeBuoy } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, Info, AlertTriangle, LifeBuoy, Users } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { Button } from '../ui/button';
 
 interface ScanResultProps {
   result: ScanResult | null;
   status: 'idle' | 'scanning' | 'success' | 'error';
+  onWarnCommunity: () => void;
 }
 
 const ResultCard: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => (
@@ -18,7 +21,7 @@ const ResultCard: React.FC<{ children: React.ReactNode, className?: string }> = 
   </Card>
 );
 
-export function ScanResultDisplay({ result, status }: ScanResultProps) {
+export function ScanResultDisplay({ result, status, onWarnCommunity }: ScanResultProps) {
   if (status === 'scanning') {
     return (
       <ResultCard className="border-primary/50">
@@ -69,6 +72,12 @@ export function ScanResultDisplay({ result, status }: ScanResultProps) {
             )}
           </Accordion>
         </CardContent>
+        <CardFooter>
+          <Button onClick={onWarnCommunity} className="w-full cursor-target" variant="secondary">
+            <Users className="mr-2 h-4 w-4" />
+            Warn others in community
+          </Button>
+        </CardFooter>
       </ResultCard>
     );
   }

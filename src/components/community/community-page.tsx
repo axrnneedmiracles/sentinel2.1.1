@@ -1,11 +1,11 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Users, MessageCircleWarning, Star } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '../ui/button';
-import { ScrollArea } from '../ui/scroll-area';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Slider } from '../ui/slider';
@@ -21,9 +21,27 @@ interface Report {
     time: string;
 }
 
-export function CommunityPage() {
+export interface ReportFormData {
+  title: string;
+  url: string;
+  comment: string;
+  rating: number;
+}
+
+interface CommunityPageProps {
+  prefilledReport?: Partial<ReportFormData> | null;
+  onFormSubmit?: () => void;
+}
+
+export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPageProps) {
   const [reports, setReports] = useState<Report[]>([]);
-  const [newReport, setNewReport] = useState({ title: '', url: '', comment: '', rating: 5 });
+  const [newReport, setNewReport] = useState<ReportFormData>({ title: '', url: '', comment: '', rating: 5 });
+
+  useEffect(() => {
+    if (prefilledReport) {
+      setNewReport(prev => ({ ...prev, ...prefilledReport }));
+    }
+  }, [prefilledReport]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -46,6 +64,10 @@ export function CommunityPage() {
     };
     setReports(prev => [reportToAdd, ...prev]);
     setNewReport({ title: '', url: '', comment: '', rating: 5 });
+
+    if (onFormSubmit) {
+      onFormSubmit();
+    }
   };
 
 
