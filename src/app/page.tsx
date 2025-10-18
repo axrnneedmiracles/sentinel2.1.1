@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { BackgroundAnimation } from '@/components/background-animation';
 import { Header } from '@/components/layout/header';
@@ -23,6 +23,7 @@ import { AboutPage } from '@/components/about/about-page';
 import AdminPage from './admin/page';
 import AdminLogin from './admin/login/page';
 import { useAdmin } from '@/context/admin-context';
+import { incrementScanCount, incrementVisitorCount } from '@/lib/firebase-actions';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
 type View = 'home' | 'history' | 'community' | 'about' | 'admin' | 'admin-login';
@@ -38,6 +39,10 @@ export default function Home() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [prefilledReport, setPrefilledReport] = useState<Partial<ReportFormData> | null>(null);
   const { isAdmin } = useAdmin();
+
+  useEffect(() => {
+    incrementVisitorCount();
+  }, []);
 
   const handleScan = async (text: string) => {
     if (!text.trim()) return;
@@ -58,6 +63,7 @@ export default function Home() {
       setResult(scanResult);
       addHistoryItem(scanResult);
       setStatus('success');
+      incrementScanCount();
     }
   };
   

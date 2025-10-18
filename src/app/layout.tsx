@@ -3,6 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import TargetCursor from '@/components/cursor/target-cursor';
 import { AdminProvider } from '@/context/admin-context';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { CommunityProvider } from '@/context/community-context';
 
 export const metadata: Metadata = {
   title: 'Sentinel Scan',
@@ -22,11 +24,15 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <AdminProvider>
-            <TargetCursor spinDuration={2} hideDefaultCursor={true} />
-            {children}
-            <Toaster />
-        </AdminProvider>
+        <FirebaseClientProvider>
+          <AdminProvider>
+            <CommunityProvider>
+                <TargetCursor spinDuration={2} hideDefaultCursor={true} />
+                {children}
+                <Toaster />
+            </CommunityProvider>
+          </AdminProvider>
+        </FirebaseClientProvider>
       </body>
     </html>
   );

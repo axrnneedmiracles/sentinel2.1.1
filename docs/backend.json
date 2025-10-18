@@ -1,0 +1,69 @@
+{
+    "entities": {
+        "Report": {
+            "title": "Community Report",
+            "description": "A report submitted by a user about a potentially malicious link.",
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "The title of the report."
+                },
+                "url": {
+                    "type": "string",
+                    "description": "The URL being reported."
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "The user's comment about the report."
+                },
+                "rating": {
+                    "type": "number",
+                    "description": "A user-assigned risk rating from 1 to 10."
+                },
+                "author": {
+                    "type": "string",
+                    "description": "The name of the user submitting the report (defaults to 'Anonymous')."
+                },
+                "time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The timestamp of when the report was created."
+                }
+            },
+            "required": ["title", "url", "comment", "rating", "author", "time"]
+        },
+        "Analytics": {
+            "title": "Analytics Stats",
+            "description": "Statistics for website usage.",
+            "type": "object",
+            "properties": {
+                "totalVisits": {
+                    "type": "number",
+                    "description": "Total number of visitors."
+                },
+                "totalScans": {
+                    "type": "number",
+                    "description": "Total number of scans performed."
+                }
+            }
+        }
+    },
+    "auth": {
+        "providers": []
+    },
+    "firestore": {
+        "/reports/{reportId}": {
+            "schema": {
+                "$ref": "#/entities/Report"
+            },
+            "description": "Collection of community-submitted reports."
+        },
+        "/analytics/{statId}": {
+            "schema": {
+                "$ref": "#/entities/Analytics"
+            },
+            "description": "Collection for analytics documents. Should only contain a single 'stats' document."
+        }
+    }
+}

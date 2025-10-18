@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore';
+
 export type ScanResult = {
     url: string;
     riskScore: number;
@@ -20,5 +22,10 @@ export interface Report {
     author: string;
     comment: string;
     rating: number;
-    time: string;
+    time: Timestamp;
+}
+
+export interface AnalyticsStats {
+    totalVisits: number;
+    totalScans: number;
 }

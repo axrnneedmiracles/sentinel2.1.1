@@ -10,7 +10,7 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Slider } from '../ui/slider';
 import { Label } from '../ui/label';
-import { useCommunity } from '@/hooks/use-community';
+import { useCommunity } from '@/context/community-context';
 import type { Report } from '@/lib/types';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -100,7 +100,7 @@ export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPagePr
                           <p className="text-sm text-muted-foreground break-all">{report.url}</p>
                         </div>
                         <Avatar>
-                          <AvatarFallback className="bg-secondary text-secondary-foreground">{report.author}</AvatarFallback>
+                          <AvatarFallback className="bg-secondary text-secondary-foreground">{report.author.charAt(0)}</AvatarFallback>
                         </Avatar>
                       </div>
                     </CardHeader>
@@ -112,7 +112,7 @@ export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPagePr
                         <Star className="w-4 h-4 fill-destructive text-destructive" />
                         <span>{report.rating}/10 Rating</span>
                       </div>
-                      <p className="text-muted-foreground">{formatDistanceToNow(new Date(report.time), { addSuffix: true })}</p>
+                      <p className="text-muted-foreground">{report.time ? formatDistanceToNow(new Date(report.time.toDate()), { addSuffix: true }) : 'Just now'}</p>
                     </CardFooter>
                   </Card>
                 ))
