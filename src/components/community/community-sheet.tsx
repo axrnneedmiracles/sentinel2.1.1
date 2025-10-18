@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -17,25 +18,20 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Slider } from '../ui/slider';
 import { Label } from '../ui/label';
+import { useCommunity } from '@/hooks/use-community';
+import { formatDistanceToNow } from 'date-fns';
+import type { ReportFormData } from './community-page';
+
 
 interface CommunitySheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-interface Report {
-    id: number;
-    title: string;
-    url: string;
-    author: string;
-    comment: string;
-    rating: number;
-    time: string;
-}
 
 export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
-  const [reports, setReports] = useState<Report[]>([]);
-  const [newReport, setNewReport] = useState({ title: '', url: '', comment: '', rating: 5 });
+  const { reports, addReport } = useCommunity();
+  const [newReport, setNewReport] = useState<ReportFormData>({ title: '', url: '', comment: '', rating: 5 });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -50,13 +46,7 @@ export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
     e.preventDefault();
     if (!newReport.title || !newReport.url || !newReport.comment) return;
 
-    const reportToAdd: Report = {
-      ...newReport,
-      id: Date.now(),
-      author: 'You', // In a real app, this would be the logged-in user
-      time: 'Just now',
-    };
-    setReports(prev => [reportToAdd, ...prev]);
+    addReport(newReport);
     setNewReport({ title: '', url: '', comment: '', rating: 5 });
   };
 
@@ -118,7 +108,7 @@ export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
                         <Star className="w-4 h-4 fill-destructive text-destructive" />
                         <span>{report.rating}/10 Rating</span>
                       </div>
-                      <p className="text-muted-foreground">{report.time}</p>
+                      <p className="text-muted-foreground">{formatDistanceToNow(new Date(report.time), { addSuffix: true })}</p>
                     </CardFooter>
                   </Card>
                 ))

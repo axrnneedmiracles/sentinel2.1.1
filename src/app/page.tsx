@@ -20,9 +20,12 @@ import MagicBento from '@/components/ui/magic-bento';
 import { HistoryPage } from '@/components/history/history-page';
 import { CommunityPage, type ReportFormData } from '@/components/community/community-page';
 import { AboutPage } from '@/components/about/about-page';
+import AdminPage from './admin/page';
+import AdminLogin from './admin/login/page';
+import { useAdmin } from '@/context/admin-context';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
-type View = 'home' | 'history' | 'community' | 'about';
+type View = 'home' | 'history' | 'community' | 'about' | 'admin' | 'admin-login';
 
 export default function Home() {
   const [status, setStatus] = useState<ScanStatus>('idle');
@@ -34,6 +37,7 @@ export default function Home() {
   const { toast } = useToast();
   const [currentView, setCurrentView] = useState<View>('home');
   const [prefilledReport, setPrefilledReport] = useState<Partial<ReportFormData> | null>(null);
+  const { isAdmin } = useAdmin();
 
   const handleScan = async (text: string) => {
     if (!text.trim()) return;
@@ -83,6 +87,14 @@ export default function Home() {
       setCurrentView('community');
     }
   };
+  
+  const handleAdminClick = () => {
+    if (isAdmin) {
+      setCurrentView('admin');
+    } else {
+      setCurrentView('admin-login');
+    }
+  };
 
   const renderContent = () => {
     switch (currentView) {
@@ -92,6 +104,10 @@ export default function Home() {
         return <CommunityPage prefilledReport={prefilledReport} onFormSubmit={() => setPrefilledReport(null)} />;
       case 'about':
         return <AboutPage />;
+      case 'admin-login':
+        return <AdminLogin onLoginSuccess={() => setCurrentView('admin')} />;
+      case 'admin':
+        return isAdmin ? <AdminPage /> : <AdminLogin onLoginSuccess={() => setCurrentView('admin')} />;
       case 'home':
       default:
         return (
@@ -138,6 +154,7 @@ export default function Home() {
           onHistoryClick={() => setHistoryOpen(true)} 
           onCommunityClick={() => setCommunityOpen(true)} 
           onAboutClick={() => setAboutOpen(true)}
+          onAdminClick={handleAdminClick}
         />
         <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-start gap-12">
           {showHomeButton && (

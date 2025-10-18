@@ -1,17 +1,19 @@
+
 'use client';
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { History, Users, Info } from 'lucide-react';
+import { History, Users, Info, Shield } from 'lucide-react';
 import ScrambledText from './ScrambledText';
 
 interface HeaderProps {
   onHistoryClick: () => void;
   onCommunityClick: () => void;
   onAboutClick: () => void;
+  onAdminClick: () => void;
 }
 
-export function Header({ onHistoryClick, onCommunityClick, onAboutClick }: HeaderProps) {
+export function Header({ onHistoryClick, onCommunityClick, onAboutClick, onAdminClick }: HeaderProps) {
   return (
     <header className="container mx-auto p-4 flex justify-between items-center">
       <div className="flex items-center gap-3 cursor-target">
@@ -48,6 +50,10 @@ export function Header({ onHistoryClick, onCommunityClick, onAboutClick }: Heade
         <Button variant="ghost" size="icon" onClick={onAboutClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
           <Info />
           <span className="sr-only">About Us</span>
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onAdminClick} className="hover:bg-destructive/20 hover:text-destructive transition-colors cursor-target">
+          <Shield />
+          <span className="sr-only">Admin Panel</span>
         </Button>
       </div>
     </header>

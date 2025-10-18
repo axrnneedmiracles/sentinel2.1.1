@@ -10,16 +10,9 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Slider } from '../ui/slider';
 import { Label } from '../ui/label';
-
-interface Report {
-    id: number;
-    title: string;
-    url: string;
-    author: string;
-    comment: string;
-    rating: number;
-    time: string;
-}
+import { useCommunity } from '@/hooks/use-community';
+import type { Report } from '@/lib/types';
+import { formatDistanceToNow } from 'date-fns';
 
 export interface ReportFormData {
   title: string;
@@ -34,7 +27,7 @@ interface CommunityPageProps {
 }
 
 export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPageProps) {
-  const [reports, setReports] = useState<Report[]>([]);
+  const { reports, addReport } = useCommunity();
   const [newReport, setNewReport] = useState<ReportFormData>({ title: '', url: '', comment: '', rating: 5 });
 
   useEffect(() => {
@@ -56,13 +49,7 @@ export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPagePr
     e.preventDefault();
     if (!newReport.title || !newReport.url || !newReport.comment) return;
 
-    const reportToAdd: Report = {
-      ...newReport,
-      id: Date.now(),
-      author: 'You', 
-      time: 'Just now',
-    };
-    setReports(prev => [reportToAdd, ...prev]);
+    addReport(newReport);
     setNewReport({ title: '', url: '', comment: '', rating: 5 });
 
     if (onFormSubmit) {
@@ -125,7 +112,7 @@ export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPagePr
                         <Star className="w-4 h-4 fill-destructive text-destructive" />
                         <span>{report.rating}/10 Rating</span>
                       </div>
-                      <p className="text-muted-foreground">{report.time}</p>
+                      <p className="text-muted-foreground">{formatDistanceToNow(new Date(report.time), { addSuffix: true })}</p>
                     </CardFooter>
                   </Card>
                 ))
