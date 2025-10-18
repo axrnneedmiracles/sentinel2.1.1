@@ -26,6 +26,19 @@ interface CommunityPageProps {
   onFormSubmit?: () => void;
 }
 
+const ReportTime = ({ time }: { time: any }) => {
+  const [formattedTime, setFormattedTime] = useState('');
+  useEffect(() => {
+    if (time) {
+      setFormattedTime(formatDistanceToNow(new Date(time.toDate()), { addSuffix: true }));
+    } else {
+      setFormattedTime('Just now');
+    }
+  }, [time]);
+
+  return <p className="text-muted-foreground">{formattedTime}</p>;
+};
+
 export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPageProps) {
   const { reports, addReport } = useCommunity();
   const [newReport, setNewReport] = useState<ReportFormData>({ title: '', url: '', comment: '', rating: 5 });
@@ -112,7 +125,7 @@ export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPagePr
                         <Star className="w-4 h-4 fill-destructive text-destructive" />
                         <span>{report.rating}/10 Rating</span>
                       </div>
-                      <p className="text-muted-foreground">{report.time ? formatDistanceToNow(new Date(report.time.toDate()), { addSuffix: true }) : 'Just now'}</p>
+                      <ReportTime time={report.time} />
                     </CardFooter>
                   </Card>
                 ))

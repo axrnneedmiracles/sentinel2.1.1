@@ -44,7 +44,7 @@ export function CommunityProvider({ children }: { children: ReactNode }) {
         toast({
             variant: 'destructive',
             title: 'Connection Error',
-            description: 'Cannot connect to the database.',
+            description: 'Cannot connect to the database. Please try again.',
         });
         return;
     }
@@ -74,7 +74,7 @@ export function CommunityProvider({ children }: { children: ReactNode }) {
         toast({
             variant: 'destructive',
             title: 'Connection Error',
-            description: 'Cannot connect to the database.',
+            description: 'Cannot connect to the database. Please try again.',
         });
         return;
     }

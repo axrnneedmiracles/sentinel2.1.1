@@ -1,3 +1,4 @@
+
 'use client';
 import type { FirebaseApp } from 'firebase/app';
 import type { Auth } from 'firebase/auth';
@@ -8,35 +9,36 @@ type FirebaseContextValue = {
   firebaseApp: FirebaseApp;
   auth: Auth;
   firestore: Firestore;
-};
+} | null;
 
-const FirebaseContext = createContext<FirebaseContextValue | undefined>(undefined);
+const FirebaseContext = createContext<FirebaseContextValue>(null);
 
 export function FirebaseProvider({
   children,
   ...value
 }: {
   children: ReactNode;
-} & FirebaseContextValue) {
+  firebaseApp: FirebaseApp;
+  auth: Auth;
+  firestore: Firestore;
+}) {
   return <FirebaseContext.Provider value={value}>{children}</FirebaseContext.Provider>;
 }
 
 export function useFirebase() {
   const context = useContext(FirebaseContext);
-  if (!context) {
-    throw new Error('useFirebase must be used within a FirebaseProvider');
-  }
+  // No error is thrown here; components should handle the null case
   return context;
 }
 
 export function useFirebaseApp() {
-  return useFirebase().firebaseApp;
+  return useFirebase()?.firebaseApp;
 }
 
 export function useAuth() {
-  return useFirebase().auth;
+  return useFirebase()?.auth;
 }
 
 export function useFirestore() {
-  return useFirebase().firestore;
+  return useFirebase()?.firestore;
 }

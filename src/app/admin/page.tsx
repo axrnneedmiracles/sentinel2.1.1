@@ -20,6 +20,20 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useAnalytics } from '@/hooks/use-analytics';
+import { useState, useEffect } from 'react';
+
+const ReportTime = ({ time }: { time: any }) => {
+  const [formattedTime, setFormattedTime] = useState('');
+  useEffect(() => {
+    if (time) {
+      setFormattedTime(formatDistanceToNow(new Date(time.toDate()), { addSuffix: true }));
+    } else {
+      setFormattedTime('Just now');
+    }
+  }, [time]);
+
+  return <p className="text-muted-foreground">{formattedTime}</p>;
+};
 
 export default function AdminPage() {
   const { reports, deleteReport } = useCommunity();
@@ -117,7 +131,7 @@ export default function AdminPage() {
                             <Star className="w-4 h-4 fill-destructive text-destructive" />
                             <span>{report.rating}/10 Rating</span>
                         </div>
-                        <p className="text-muted-foreground">{report.time ? formatDistanceToNow(new Date(report.time.toDate()), { addSuffix: true }) : 'Just now'}</p>
+                        <ReportTime time={report.time} />
                         </CardFooter>
                     </Card>
                     ))
