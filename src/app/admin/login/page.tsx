@@ -48,7 +48,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        placeholder="axrn"
+                        placeholder="Enter username"
                         className="bg-input"
                         required 
                     />
