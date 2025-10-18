@@ -1,3 +1,4 @@
+
 'use client';
 
 import { createContext, useContext, ReactNode, useCallback } from 'react';
@@ -9,6 +10,7 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  Firestore,
 } from 'firebase/firestore';
 import { useFirestore } from '@/firebase/provider';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -29,15 +31,25 @@ const CommunityContext = createContext<CommunityContextType | undefined>(undefin
 export function CommunityProvider({ children }: { children: ReactNode }) {
   const firestore = useFirestore();
   const { toast } = useToast();
-  const reportsCollection = collection(firestore, 'reports');
-  const reportsQuery = query(reportsCollection, orderBy('time', 'desc'));
+  
+  const reportsCollection = firestore ? collection(firestore as Firestore, 'reports') : null;
+  const reportsQuery = reportsCollection ? query(reportsCollection, orderBy('time', 'desc')) : null;
   
   const [reportsSnapshot, loading, error] = useCollection(reportsQuery);
 
   const reports = reportsSnapshot ? reportsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Report)) : [];
 
   const addReport = useCallback(async (reportData: ReportFormData) => {
+    if (!firestore) {
+        toast({
+            variant: 'destructive',
+            title: 'Connection Error',
+            description: 'Cannot connect to the database.',
+        });
+        return;
+    }
     try {
+      const reportsCollection = collection(firestore, 'reports');
       await addDoc(reportsCollection, {
         ...reportData,
         author: 'Anonymous',
@@ -58,6 +70,14 @@ export function CommunityProvider({ children }: { children: ReactNode }) {
   }, [firestore, toast]);
 
   const deleteReport = useCallback(async (reportId: string) => {
+     if (!firestore) {
+        toast({
+            variant: 'destructive',
+            title: 'Connection Error',
+            description: 'Cannot connect to the database.',
+        });
+        return;
+    }
     try {
       const reportRef = doc(firestore, 'reports', reportId);
       await deleteDoc(reportRef);

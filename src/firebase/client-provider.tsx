@@ -1,9 +1,7 @@
+
 'use client';
-import { FirebaseApp } from 'firebase/app';
-import { Auth } from 'firebase/auth';
-import { Firestore } from 'firebase/firestore';
-import { ReactNode, useMemo } from 'react';
-import { initializeFirebase } from '.';
+import { ReactNode, useMemo, useState, useEffect } from 'react';
+import { getFirebaseClient } from '.';
 import { FirebaseProvider } from './provider';
 
 interface FirebaseClientProviderProps {
@@ -11,10 +9,23 @@ interface FirebaseClientProviderProps {
 }
 
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
+  const [isFirebaseInitialized, setIsFirebaseInitialized] = useState(false);
+
   const { firebaseApp, auth, firestore } = useMemo(() => {
-    const { firebaseApp, auth, firestore } = initializeFirebase();
-    return { firebaseApp, auth, firestore };
+    if (typeof window !== 'undefined') {
+      const client = getFirebaseClient();
+      setIsFirebaseInitialized(true);
+      return client;
+    }
+    return { firebaseApp: null, auth: null, firestore: null };
   }, []);
+
+  // Don't render children until Firebase is initialized on the client.
+  if (!isFirebaseInitialized || !firebaseApp || !auth || !firestore) {
+    // You can render a loading spinner here if you want.
+    // Returning null for now to prevent child components from rendering prematurely.
+    return null;
+  }
 
   return (
     <FirebaseProvider firebaseApp={firebaseApp} auth={auth} firestore={firestore}>

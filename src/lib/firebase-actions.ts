@@ -1,11 +1,12 @@
+
 'use server';
 
-import { initializeFirebase } from '@/firebase';
+import { getFirebaseServer } from '@/firebase';
 import { doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore';
 
 async function getDb() {
-  // We can't use the 'use' hooks on the server, so we initialize directly
-  const { firestore } = initializeFirebase();
+  // Use the server-specific initialization
+  const { firestore } = getFirebaseServer();
   return firestore;
 }
 
