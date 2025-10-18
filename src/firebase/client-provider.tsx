@@ -1,39 +1,25 @@
 
 'use client';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { getFirebaseClient } from '.';
 import { FirebaseProvider } from './provider';
-import type { FirebaseApp } from 'firebase/app';
-import type { Auth } from 'firebase/auth';
-import type { Firestore } from 'firebase/firestore';
 
 interface FirebaseClientProviderProps {
   children: ReactNode;
 }
 
 export function FirebaseClientProvider({ children }: FirebaseClientProviderProps) {
-  const [services, setServices] = useState<{
-    firebaseApp?: FirebaseApp;
-    auth?: Auth;
-    firestore?: Firestore;
-  } | null>(null);
+  const { firebaseApp, auth, firestore } = getFirebaseClient();
 
-  useEffect(() => {
-    // This effect runs only on the client, after the initial render.
-    // This ensures Firebase is initialized before we try to use it.
-    const { firebaseApp, auth, firestore } = getFirebaseClient();
-    setServices({ firebaseApp, auth, firestore });
-  }, []);
-
-  // On the server and during the first client render before useEffect runs,
-  // we return null. Child components that depend on the Firebase context
-  // will also not render, preventing server/client mismatch and race conditions.
-  if (!services || !services.firebaseApp) {
-    return null; 
+  // On the server, this will be undefined, and we'll render nothing.
+  // On the client, this will be defined, and we'll render the provider.
+  // This avoids trying to initialize Firebase on the server.
+  if (!firebaseApp) {
+    return null;
   }
 
   return (
-    <FirebaseProvider firebaseApp={services.firebaseApp} auth={services.auth!} firestore={services.firestore!}>
+    <FirebaseProvider firebaseApp={firebaseApp} auth={auth} firestore={firestore}>
       {children}
     </FirebaseProvider>
   );
