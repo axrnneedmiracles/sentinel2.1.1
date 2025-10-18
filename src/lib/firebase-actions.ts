@@ -1,12 +1,14 @@
 
-'use server';
+'use client';
 
-import { getFirebaseServer } from '@/firebase';
+import { getFirebaseClient } from '@/firebase';
 import { doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore';
 
 async function getDb() {
-  // Use the server-specific initialization
-  const { firestore } = getFirebaseServer();
+  const { firestore } = getFirebaseClient();
+  if (!firestore) {
+    throw new Error("Firestore is not initialized.");
+  }
   return firestore;
 }
 
