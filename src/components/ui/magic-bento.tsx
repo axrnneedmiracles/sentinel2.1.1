@@ -1,3 +1,4 @@
+
 'use client';
 import { useRef, useEffect, useState, useCallback, CSSProperties, ReactNode } from 'react';
 import { gsap } from 'gsap';
@@ -28,6 +29,13 @@ const cardData = [
     title: 'About Sentinel',
     description: 'Learn more about the project and its creator.',
     label: 'About'
+  },
+  {
+    id: 'pro',
+    color: '#060010',
+    title: 'Go Pro',
+    description: 'Unlock advanced features with Sentinel Pro.',
+    label: 'Premium'
   }
 ];
 
@@ -461,7 +469,7 @@ const GlobalSpotlight = ({
 
 const BentoCardGrid = ({ children, gridRef }: { children: ReactNode, gridRef: React.RefObject<HTMLDivElement> }) => (
   <div
-    className="bento-section grid gap-2 p-3 max-w-[54rem] select-none relative"
+    className="bento-section grid gap-2 p-3 max-w-[68rem] select-none relative"
     style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)' }}
     ref={gridRef}
   >
@@ -484,7 +492,7 @@ const useMobileDetection = () => {
   return isMobile;
 };
 
-type View = 'home' | 'history' | 'community' | 'about';
+type View = 'home' | 'history' | 'community' | 'about' | 'pro';
 
 interface MagicBentoProps {
     textAutoHide?: boolean;
@@ -520,7 +528,7 @@ const MagicBento = ({
   const shouldDisableAnimations = disableAnimations || isMobile;
 
   const handleCardClick = (id: string) => {
-    if(id === 'history' || id === 'community' || id === 'about') {
+    if(id === 'history' || id === 'community' || id === 'about' || id === 'pro') {
       onCardClick(id);
     }
   };
@@ -544,21 +552,15 @@ const MagicBento = ({
           }
           
           .card-responsive {
-            grid-template-columns: 1fr;
-            width: 90%;
-            margin: 0 auto;
-            padding: 0.5rem;
-          }
-          
-          @media (min-width: 600px) {
-            .card-responsive {
-              grid-template-columns: repeat(2, 1fr);
-            }
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            width: 100%;
           }
           
           @media (min-width: 1024px) {
             .card-responsive {
-              grid-template-columns: repeat(3, 1fr);
+              grid-template-columns: repeat(4, 1fr);
             }
           }
           
@@ -623,6 +625,12 @@ const MagicBento = ({
             text-overflow: ellipsis;
           }
           
+          @media (max-width: 1023px) {
+            .card-responsive {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+
           @media (max-width: 599px) {
             .card-responsive {
               grid-template-columns: 1fr;
@@ -650,7 +658,7 @@ const MagicBento = ({
       )}
 
       <BentoCardGrid gridRef={gridRef}>
-        <div className="card-responsive grid gap-2">
+        <div className="card-responsive">
           {cardData.map((card, index) => {
             const baseClassName = `card flex flex-col justify-between relative aspect-square min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
               enableBorderGlow ? 'card--border-glow' : ''

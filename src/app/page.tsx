@@ -24,9 +24,10 @@ import AdminPage from './admin/page';
 import AdminLogin from './admin/login/page';
 import { useAdmin } from '@/context/admin-context';
 import { incrementScanCount, incrementVisitorCount } from '@/lib/firebase-actions';
+import { GoProPage } from '@/components/pro/go-pro-page';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
-type View = 'home' | 'history' | 'community' | 'about' | 'admin' | 'admin-login';
+type View = 'home' | 'history' | 'community' | 'about' | 'admin' | 'admin-login' | 'pro';
 
 export default function Home() {
   const [status, setStatus] = useState<ScanStatus>('idle');
@@ -110,6 +111,8 @@ export default function Home() {
         return <CommunityPage prefilledReport={prefilledReport} onFormSubmit={() => setPrefilledReport(null)} />;
       case 'about':
         return <AboutPage />;
+      case 'pro':
+        return <GoProPage />;
       case 'admin-login':
         return <AdminLogin onLoginSuccess={() => setCurrentView('admin')} />;
       case 'admin':
