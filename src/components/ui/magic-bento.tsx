@@ -1,4 +1,3 @@
-
 'use client';
 import { useRef, useEffect, useState, useCallback, CSSProperties, ReactNode } from 'react';
 import { gsap } from 'gsap';
@@ -469,7 +468,7 @@ const GlobalSpotlight = ({
 
 const BentoCardGrid = ({ children, gridRef }: { children: ReactNode, gridRef: React.RefObject<HTMLDivElement> }) => (
   <div
-    className="bento-section grid gap-2 p-3 max-w-[68rem] select-none relative"
+    className="bento-section grid gap-2 p-3 max-w-[80rem] select-none relative"
     style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)' }}
     ref={gridRef}
   >
@@ -531,6 +530,51 @@ const MagicBento = ({
     onCardClick(id as View);
   };
 
+  const renderCard = (card: typeof cardData[0], index: number) => {
+    const baseClassName = `card flex flex-col justify-between relative aspect-square min-h-[180px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+      enableBorderGlow ? 'card--border-glow' : ''
+    }`;
+
+    const cardStyle: CSSProperties = {
+      backgroundColor: card.color || 'var(--background-dark)',
+      borderColor: 'var(--border-color)',
+      color: 'var(--white)',
+      '--glow-x': '50%',
+      '--glow-y': '50%',
+      '--glow-intensity': '0',
+      '--glow-radius': '200px'
+    };
+
+    return (
+      <ParticleCard
+        key={index}
+        className={baseClassName}
+        style={cardStyle}
+        disableAnimations={shouldDisableAnimations}
+        particleCount={particleCount}
+        glowColor={glowColor}
+        enableTilt={enableTilt}
+        clickEffect={clickEffect}
+        enableMagnetism={enableMagnetism}
+        onClick={() => handleCardClick(card.id)}
+      >
+        <div className="card__header flex justify-between gap-3 relative text-white">
+          <span className="card__label text-base">{card.label}</span>
+        </div>
+        <div className="card__content flex flex-col relative text-white">
+          <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
+            {card.title}
+          </h3>
+          <p
+            className={`card__description text-xs leading-5 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}
+          >
+            {card.description}
+          </p>
+        </div>
+      </ParticleCard>
+    );
+  };
+
   return (
     <>
       <style>
@@ -551,14 +595,21 @@ const MagicBento = ({
           
           .card-responsive {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
             width: 100%;
+            align-items: center;
+          }
+          
+          @media (min-width: 640px) {
+            .card-responsive {
+              grid-template-columns: repeat(2, 1fr);
+            }
           }
           
           @media (min-width: 1024px) {
             .card-responsive {
-              grid-template-columns: repeat(4, 1fr);
+              grid-template-columns: repeat(5, 1fr);
             }
           }
           
@@ -621,24 +672,28 @@ const MagicBento = ({
             overflow: hidden;
             text-overflow: ellipsis;
           }
-          
-          @media (max-width: 1023px) {
-            .card-responsive {
-              grid-template-columns: repeat(2, 1fr);
+
+          .robo-container {
+            grid-column: span 1;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 20px;
+          }
+
+          @media (max-width: 1023px) and (min-width: 640px) {
+            .robo-container {
+               grid-column: span 2;
+               order: -1;
             }
           }
 
-          @media (max-width: 599px) {
-            .card-responsive {
-              grid-template-columns: 1fr;
-              width: 90%;
-              margin: 0 auto;
-              padding: 0.5rem;
-            }
-            
-            .card-responsive .card {
-              width: 100%;
-              min-height: 180px;
+          @media (max-width: 639px) {
+            .robo-container {
+               height: 200px;
+               order: -1;
             }
           }
         `}
@@ -656,50 +711,20 @@ const MagicBento = ({
 
       <BentoCardGrid gridRef={gridRef}>
         <div className="card-responsive">
-          {cardData.map((card, index) => {
-            const baseClassName = `card flex flex-col justify-between relative aspect-square min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
-              enableBorderGlow ? 'card--border-glow' : ''
-            }`;
+          {/* First two boxes */}
+          {cardData.slice(0, 2).map((card, index) => renderCard(card, index))}
 
-            const cardStyle: CSSProperties = {
-              backgroundColor: card.color || 'var(--background-dark)',
-              borderColor: 'var(--border-color)',
-              color: 'var(--white)',
-              '--glow-x': '50%',
-              '--glow-y': '50%',
-              '--glow-intensity': '0',
-              '--glow-radius': '200px'
-            };
+          {/* Spline Robo in the middle */}
+          <div className="robo-container">
+            {/* @ts-ignore */}
+            <spline-viewer 
+              loading-anim-type="spinner-small-dark" 
+              url="https://prod.spline.design/9UwQ9JtnhHTUxTlh/scene.splinecode"
+            ></spline-viewer>
+          </div>
 
-            return (
-              <ParticleCard
-                key={index}
-                className={baseClassName}
-                style={cardStyle}
-                disableAnimations={shouldDisableAnimations}
-                particleCount={particleCount}
-                glowColor={glowColor}
-                enableTilt={enableTilt}
-                clickEffect={clickEffect}
-                enableMagnetism={enableMagnetism}
-                onClick={() => handleCardClick(card.id)}
-              >
-                <div className="card__header flex justify-between gap-3 relative text-white">
-                  <span className="card__label text-base">{card.label}</span>
-                </div>
-                <div className="card__content flex flex-col relative text-white">
-                  <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
-                    {card.title}
-                  </h3>
-                  <p
-                    className={`card__description text-xs leading-5 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}
-                  >
-                    {card.description}
-                  </p>
-                </div>
-              </ParticleCard>
-            );
-          })}
+          {/* Last two boxes */}
+          {cardData.slice(2, 4).map((card, index) => renderCard(card, index + 2))}
         </div>
       </BentoCardGrid>
     </>
