@@ -683,6 +683,7 @@ const MagicBento = ({
             overflow: hidden;
             border-radius: 20px;
             position: relative;
+            cursor: pointer;
           }
 
           .about-us-box {
@@ -698,7 +699,11 @@ const MagicBento = ({
             align-items: center;
             justify-content: center;
             border-top: 1px solid rgba(132, 0, 255, 0.3);
-            pointer-events: none;
+            transition: background 0.3s ease;
+          }
+
+          .robo-container:hover .about-us-box {
+            background: rgba(132, 0, 255, 0.2);
           }
 
           .about-us-text {
@@ -742,7 +747,10 @@ const MagicBento = ({
           {cardData.slice(0, 2).map((card, index) => renderCard(card, index))}
 
           {/* Spline Robo in the middle with About Us overlay at bottom to cover watermark */}
-          <div className="robo-container">
+          <div 
+            className="robo-container cursor-target"
+            onClick={() => handleCardClick('about')}
+          >
             {/* @ts-ignore */}
             <spline-viewer 
               loading-anim-type="spinner-small-dark" 
