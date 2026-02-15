@@ -7,17 +7,16 @@ import { BackgroundAnimation } from '@/components/background-animation';
 import { Header } from '@/components/layout/header';
 import { ScanForm } from '@/components/scan/scan-form';
 import { ScanResultDisplay } from '@/components/scan/scan-result';
-import { HistorySheet } from '@/components/history/history-sheet';
+import { ImageDetectorSheet } from '@/components/detector/image-detector-sheet';
 import { CommunitySheet } from '@/components/community/community-sheet';
 import { AboutSheet } from '@/components/about/about-sheet';
 import { scanMessage } from '@/lib/actions';
 import type { ScanResult } from '@/lib/types';
-import { useHistory } from '@/hooks/use-history';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { HomeIcon } from 'lucide-react';
 import MagicBento from '@/components/ui/magic-bento';
-import { HistoryPage } from '@/components/history/history-page';
+import { ImageDetectorPage } from '@/components/detector/image-detector-page';
 import { CommunityPage, type ReportFormData } from '@/components/community/community-page';
 import { AboutPage } from '@/components/about/about-page';
 import AdminPage from './admin/page';
@@ -27,15 +26,14 @@ import { incrementScanCount, incrementVisitorCount } from '@/lib/firebase-action
 import { GoProPage } from '@/components/pro/go-pro-page';
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error';
-type View = 'home' | 'history' | 'community' | 'about' | 'admin' | 'admin-login' | 'pro';
+type View = 'home' | 'detector' | 'community' | 'about' | 'admin' | 'admin-login' | 'pro';
 
 export default function Home() {
   const [status, setStatus] = useState<ScanStatus>('idle');
   const [result, setResult] = useState<ScanResult | null>(null);
-  const [historyOpen, setHistoryOpen] = useState(false);
+  const [detectorOpen, setDetectorOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const { addHistoryItem } = useHistory();
   const { toast } = useToast();
   const [currentView, setCurrentView] = useState<View>('home');
   const [prefilledReport, setPrefilledReport] = useState<Partial<ReportFormData> | null>(null);
@@ -62,7 +60,6 @@ export default function Home() {
       setStatus('error');
     } else {
       setResult(scanResult);
-      addHistoryItem(scanResult);
       setStatus('success');
       incrementScanCount();
     }
@@ -105,8 +102,8 @@ export default function Home() {
 
   const renderContent = () => {
     switch (currentView) {
-      case 'history':
-        return <HistoryPage />;
+      case 'detector':
+        return <ImageDetectorPage />;
       case 'community':
         return <CommunityPage prefilledReport={prefilledReport} onFormSubmit={() => setPrefilledReport(null)} />;
       case 'about':
@@ -147,7 +144,7 @@ export default function Home() {
     
               <ScanResultDisplay result={result} status={status} onWarnCommunity={handleWarnCommunity} />
 
-              {status === 'idle' && <MagicBento onCardClick={setCurrentView} />}
+              {status === 'idle' && <MagicBento onCardClick={(v) => setCurrentView(v as View)} />}
             </>
         );
     }
@@ -160,7 +157,7 @@ export default function Home() {
       <BackgroundAnimation />
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header 
-          onHistoryClick={() => setHistoryOpen(true)} 
+          onDetectorClick={() => setDetectorOpen(true)} 
           onCommunityClick={() => setCommunityOpen(true)} 
           onAboutClick={() => setAboutOpen(true)}
           onAdminClick={handleAdminClick}
@@ -181,7 +178,7 @@ export default function Home() {
         </footer>
       </div>
 
-      <HistorySheet open={historyOpen} onOpenChange={setHistoryOpen} />
+      <ImageDetectorSheet open={detectorOpen} onOpenChange={setDetectorOpen} />
       <CommunitySheet open={communityOpen} onOpenChange={setCommunityOpen} />
       <AboutSheet open={aboutOpen} onOpenChange={setAboutOpen} />
     </div>

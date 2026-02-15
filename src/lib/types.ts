@@ -1,3 +1,4 @@
+
 import type { Timestamp } from 'firebase/firestore';
 
 export type ScanResult = {
@@ -8,6 +9,18 @@ export type ScanResult = {
     recommendedActions?: string;
     advice?: string;
     error?: string;
+};
+
+export type ImageAnalysisResult = {
+    id: string;
+    imageUrl: string;
+    metadataScore: number;
+    apiScore: number;
+    finalScore: number;
+    isAiGenerated: boolean;
+    metadataFindings: string[];
+    aiExplanation: string;
+    analyzedAt: string;
 };
 
 export type ScanHistoryItem = ScanResult & {

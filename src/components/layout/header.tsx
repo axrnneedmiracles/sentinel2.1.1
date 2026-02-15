@@ -3,29 +3,26 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { History, Users, Info, Shield } from 'lucide-react';
+import { Scan, Users, Info, Shield } from 'lucide-react';
 import ScrambledText from './ScrambledText';
 
 interface HeaderProps {
-  onHistoryClick: () => void;
+  onDetectorClick: () => void;
   onCommunityClick: () => void;
   onAboutClick: () => void;
   onAdminClick: () => void;
 }
 
-export function Header({ onHistoryClick, onCommunityClick, onAboutClick, onAdminClick }: HeaderProps) {
+export function Header({ onDetectorClick, onCommunityClick, onAboutClick, onAdminClick }: HeaderProps) {
   return (
     <header className="container mx-auto p-4 flex justify-between items-center">
       <div className="flex items-center gap-3 cursor-target">
-        {/* 
-          Your logo.gif file in the `public` directory will be displayed here.
-        */}
         <Image
           src="/logo.gif" 
           alt="Sentinel Scan Logo"
           width={32}
           height={32}
-          unoptimized // Required for GIFs
+          unoptimized
         />
         <ScrambledText
             radius={120}
@@ -39,9 +36,9 @@ export function Header({ onHistoryClick, onCommunityClick, onAboutClick, onAdmin
       </div>
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted-foreground hidden md:inline">Quick Access</span>
-        <Button variant="ghost" size="icon" onClick={onHistoryClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
-          <History />
-          <span className="sr-only">Scan History</span>
+        <Button variant="ghost" size="icon" onClick={onDetectorClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
+          <Scan />
+          <span className="sr-only">Image Detector</span>
         </Button>
         <Button variant="ghost" size="icon" onClick={onCommunityClick} className="hover:bg-primary/20 hover:text-primary-foreground transition-colors cursor-target">
           <Users />
