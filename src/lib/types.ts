@@ -36,6 +36,7 @@ export interface Report {
     comment: string;
     rating: number;
     time: Timestamp;
+    isApproved: boolean;
 }
 
 export interface AnalyticsStats {

@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from '@/components/ui/sheet';
-import { Users, MessageCircleWarning, Star } from 'lucide-react';
+import { Users, MessageCircleWarning, Star, ShieldCheck } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '../ui/button';
@@ -32,6 +32,7 @@ interface CommunitySheetProps {
 export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
   const { reports, addReport } = useCommunity();
   const [newReport, setNewReport] = useState<ReportFormData>({ title: '', url: '', comment: '', rating: 5 });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -42,11 +43,13 @@ export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
     setNewReport(prev => ({...prev, rating: value[0]}));
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newReport.title || !newReport.url || !newReport.comment) return;
 
-    addReport(newReport);
+    setIsSubmitting(true);
+    await addReport(newReport);
+    setIsSubmitting(false);
     setNewReport({ title: '', url: '', comment: '', rating: 5 });
   };
 
@@ -60,28 +63,33 @@ export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
               Community Reports
             </SheetTitle>
             <SheetDescription>
-              See what others are reporting and share your own findings.
+              Moderated findings from the Sentinel Scan community.
             </SheetDescription>
           </SheetHeader>
           
           <div className="py-4">
             <form onSubmit={handleSubmit} className="space-y-4 p-4 rounded-lg bg-background/50 border border-border/50">
-              <h3 className="text-lg font-semibold text-primary-foreground">Submit a Report</h3>
-              <Input name="title" placeholder="Report Title (e.g. 'Phishing attempt')" value={newReport.title} onChange={handleInputChange} className="bg-input" required />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                <ShieldCheck className="w-4 h-4 text-accent" />
+                Reports are published after admin review.
+              </div>
+              <Input name="title" placeholder="Report Title" value={newReport.title} onChange={handleInputChange} className="bg-input" required />
               <Input name="url" placeholder="Malicious URL" value={newReport.url} onChange={handleInputChange} className="bg-input" required />
               <Textarea name="comment" placeholder="Describe the scam..." value={newReport.comment} onChange={handleInputChange} className="bg-input" required/>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                   <Label htmlFor="rating">Your Rating</Label>
+                   <Label htmlFor="rating">Risk Rating</Label>
                    <span className="text-primary font-bold">{newReport.rating}/10</span>
                 </div>
                 <Slider id="rating" min={1} max={10} step={1} value={[newReport.rating]} onValueChange={handleRatingChange} />
               </div>
-              <Button type="submit" className="w-full">Submit Report</Button>
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit Report'}
+              </Button>
             </form>
           </div>
 
-          <ScrollArea className="h-[calc(100% - 24rem)] pr-4">
+          <ScrollArea className="h-[calc(100%-26rem)] pr-4">
             <div className="py-4 space-y-4">
               {reports.length > 0 ? (
                 reports.map((report) => (
@@ -114,7 +122,7 @@ export function CommunitySheet({ open, onOpenChange }: CommunitySheetProps) {
                 ))
               ) : (
                 <div className="text-center py-10">
-                  <p className="text-muted-foreground">No community reports yet. Be the first!</p>
+                  <p className="text-muted-foreground">No public reports yet. Help keep the community safe!</p>
                 </div>
               )}
             </div>

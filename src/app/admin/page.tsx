@@ -2,7 +2,7 @@
 'use client';
 
 import { useCommunity } from '@/context/community-context';
-import { Shield, Trash2, LogOut, MessageCircleWarning, Star, Users, ScanSearch } from 'lucide-react';
+import { Shield, Trash2, LogOut, MessageCircleWarning, Star, Users, ScanSearch, CheckCircle2, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useState, useEffect } from 'react';
+import { Badge } from '@/components/ui/badge';
 
 const ReportTime = ({ time }: { time: any }) => {
   const [formattedTime, setFormattedTime] = useState('');
@@ -36,7 +37,7 @@ const ReportTime = ({ time }: { time: any }) => {
 };
 
 export default function AdminPage() {
-  const { reports, deleteReport } = useCommunity();
+  const { pendingReports, reports, approveReport, deleteReport } = useCommunity();
   const { logout } = useAdmin();
   const { stats, loading } = useAnalytics();
 
@@ -80,14 +81,88 @@ export default function AdminPage() {
             </CardContent>
         </Card>
 
+        {/* Pending Reports Section */}
+        <Card className="w-full max-w-3xl bg-card/30 backdrop-blur-lg border-yellow-500/20">
+            <CardHeader>
+                <CardTitle className="text-xl font-semibold flex items-center gap-2 text-yellow-500">
+                    <Clock className="w-6 h-6" />
+                    Pending Approval ({pendingReports.length})
+                </CardTitle>
+                <CardDescription>Reports submitted by users that need review.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+                {pendingReports.length > 0 ? (
+                    pendingReports.map((report) => (
+                    <Card key={report.id} className="bg-background/50 border-yellow-500/20 shadow-sm shadow-yellow-500/5">
+                        <CardHeader>
+                        <div className="flex justify-between items-start gap-4">
+                            <div>
+                            <CardTitle className="text-base font-bold flex items-center gap-2">
+                                <MessageCircleWarning className="text-yellow-500 w-5 h-5" />
+                                {report.title}
+                            </CardTitle>
+                            <p className="text-sm text-muted-foreground break-all">{report.url}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Button variant="outline" size="sm" onClick={() => approveReport(report.id)} className="border-accent text-accent hover:bg-accent/10">
+                                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                                    Approve
+                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="text-destructive hover:bg-destructive/10">
+                                            <Trash2 className="w-4 h-4"/>
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                        <AlertDialogTitle>Reject Report?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This will permanently delete the report.
+                                        </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => deleteReport(report.id)}>Delete</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
+                        </div>
+                        </CardHeader>
+                        <CardContent>
+                        <p className="text-sm">“{report.comment}”</p>
+                        </CardContent>
+                        <CardFooter className="flex justify-between items-center text-xs">
+                        <div className="flex items-center gap-1 text-yellow-500 font-bold">
+                            <Star className="w-4 h-4 fill-yellow-500" />
+                            <span>{report.rating}/10 Rating</span>
+                        </div>
+                        <ReportTime time={report.time} />
+                        </CardFooter>
+                    </Card>
+                    ))
+                ) : (
+                    <div className="text-center py-6">
+                        <p className="text-muted-foreground">No pending reports to review.</p>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+
+        {/* Live Reports Section */}
         <Card className="w-full max-w-3xl bg-card/30 backdrop-blur-lg border-primary/20">
             <CardHeader>
-                <h3 className="text-xl font-semibold text-center text-primary-foreground">Community Reports ({reports.length})</h3>
+                <CardTitle className="text-xl font-semibold flex items-center gap-2 text-primary-foreground">
+                    <CheckCircle2 className="w-6 h-6 text-accent" />
+                    Live Community Reports ({reports.length})
+                </CardTitle>
+                <CardDescription>Reports currently visible to all users.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+            <CardContent className="space-y-3 max-h-[40vh] overflow-y-auto pr-2">
                 {reports.length > 0 ? (
                     reports.map((report) => (
-                    <Card key={report.id} className="bg-background/50 border-border/50">
+                    <Card key={report.id} className="bg-background/50 border-border/50 opacity-80">
                         <CardHeader>
                         <div className="flex justify-between items-start gap-4">
                             <div>
@@ -98,20 +173,18 @@ export default function AdminPage() {
                             <p className="text-sm text-muted-foreground break-all">{report.url}</p>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Avatar>
-                                <AvatarFallback className="bg-secondary text-secondary-foreground">{report.author.charAt(0)}</AvatarFallback>
-                                </Avatar>
+                                <Badge variant="secondary" className="bg-accent/20 text-accent">Live</Badge>
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
-                                        <Button variant="destructive" size="icon">
+                                        <Button variant="ghost" size="icon" className="text-destructive">
                                             <Trash2 className="w-4 h-4"/>
                                         </Button>
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                        <AlertDialogTitle>Remove from Community?</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action will permanently delete this report. This cannot be undone.
+                                            This action will permanently delete this approved report.
                                         </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
@@ -128,7 +201,7 @@ export default function AdminPage() {
                         </CardContent>
                         <CardFooter className="flex justify-between items-center text-xs">
                         <div className="flex items-center gap-1 text-destructive font-bold">
-                            <Star className="w-4 h-4 fill-destructive text-destructive" />
+                            <Star className="w-4 h-4 fill-destructive" />
                             <span>{report.rating}/10 Rating</span>
                         </div>
                         <ReportTime time={report.time} />
@@ -136,8 +209,8 @@ export default function AdminPage() {
                     </Card>
                     ))
                 ) : (
-                    <div className="text-center py-10">
-                    <p className="text-muted-foreground">No community reports yet.</p>
+                    <div className="text-center py-6">
+                    <p className="text-muted-foreground">No approved reports yet.</p>
                     </div>
                 )}
             </CardContent>

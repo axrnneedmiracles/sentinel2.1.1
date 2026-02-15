@@ -1,3 +1,4 @@
+
 {
     "entities": {
         "Report": {
@@ -29,9 +30,13 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "The timestamp of when the report was created."
+                },
+                "isApproved": {
+                    "type": "boolean",
+                    "description": "Whether the report has been approved by an admin."
                 }
             },
-            "required": ["title", "url", "comment", "rating", "author", "time"]
+            "required": ["title", "url", "comment", "rating", "author", "time", "isApproved"]
         },
         "Analytics": {
             "title": "Analytics Stats",
