@@ -692,18 +692,20 @@ const MagicBento = ({
             left: 0;
             width: 100%;
             height: 3rem;
-            background: rgba(6, 0, 16, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 20;
+            background: rgba(6, 0, 16, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 50;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-top: 1px solid rgba(132, 0, 255, 0.3);
-            transition: background 0.3s ease;
+            border-top: 1px solid rgba(132, 0, 255, 0.5);
+            transition: all 0.3s ease;
+            pointer-events: auto;
           }
 
           .robo-container:hover .about-us-box {
-            background: rgba(132, 0, 255, 0.2);
+            background: rgba(132, 0, 255, 0.3);
+            border-top-color: rgba(132, 0, 255, 0.8);
           }
 
           .about-us-text {
@@ -756,7 +758,13 @@ const MagicBento = ({
               loading-anim-type="spinner-small-dark" 
               url="https://prod.spline.design/9UwQ9JtnhHTUxTlh/scene.splinecode"
             ></spline-viewer>
-            <div className="about-us-box">
+            <div 
+              className="about-us-box cursor-target"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCardClick('about');
+              }}
+            >
               <span className="about-us-text">About Us</span>
             </div>
           </div>
