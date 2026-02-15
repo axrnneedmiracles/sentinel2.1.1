@@ -1,3 +1,4 @@
+
 'use client';
 import { useRef, useEffect, useState, useCallback, CSSProperties, ReactNode } from 'react';
 import { gsap } from 'gsap';
@@ -681,6 +682,32 @@ const MagicBento = ({
             justify-content: center;
             overflow: hidden;
             border-radius: 20px;
+            position: relative;
+          }
+
+          .about-us-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4rem;
+            background: rgba(6, 0, 16, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(132, 0, 255, 0.3);
+            pointer-events: none;
+          }
+
+          .about-us-text {
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(132, 0, 255, 0.8);
           }
 
           @media (max-width: 1023px) and (min-width: 640px) {
@@ -714,8 +741,11 @@ const MagicBento = ({
           {/* First two boxes */}
           {cardData.slice(0, 2).map((card, index) => renderCard(card, index))}
 
-          {/* Spline Robo in the middle */}
+          {/* Spline Robo in the middle with About Us overlay */}
           <div className="robo-container">
+            <div className="about-us-box">
+              <span className="about-us-text">About Us</span>
+            </div>
             {/* @ts-ignore */}
             <spline-viewer 
               loading-anim-type="spinner-small-dark" 
