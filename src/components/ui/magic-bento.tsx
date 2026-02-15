@@ -687,25 +687,25 @@ const MagicBento = ({
 
           .about-us-box {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 4rem;
-            background: rgba(6, 0, 16, 0.7);
+            height: 3rem;
+            background: rgba(6, 0, 16, 0.85);
             backdrop-filter: blur(8px);
             z-index: 20;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid rgba(132, 0, 255, 0.3);
+            border-top: 1px solid rgba(132, 0, 255, 0.3);
             pointer-events: none;
           }
 
           .about-us-text {
             color: #fff;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 800;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             text-shadow: 0 0 10px rgba(132, 0, 255, 0.8);
           }
@@ -741,16 +741,16 @@ const MagicBento = ({
           {/* First two boxes */}
           {cardData.slice(0, 2).map((card, index) => renderCard(card, index))}
 
-          {/* Spline Robo in the middle with About Us overlay */}
+          {/* Spline Robo in the middle with About Us overlay at bottom to cover watermark */}
           <div className="robo-container">
-            <div className="about-us-box">
-              <span className="about-us-text">About Us</span>
-            </div>
             {/* @ts-ignore */}
             <spline-viewer 
               loading-anim-type="spinner-small-dark" 
               url="https://prod.spline.design/9UwQ9JtnhHTUxTlh/scene.splinecode"
             ></spline-viewer>
+            <div className="about-us-box">
+              <span className="about-us-text">About Us</span>
+            </div>
           </div>
 
           {/* Last two boxes */}
