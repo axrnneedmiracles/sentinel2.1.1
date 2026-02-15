@@ -687,7 +687,7 @@ const MagicBento = ({
 
           .about-us-box {
             position: absolute;
-            bottom: 0;
+            bottom: 0.75rem;
             left: 0;
             width: 100%;
             height: 3rem;
