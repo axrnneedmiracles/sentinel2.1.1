@@ -60,21 +60,21 @@ export function CommunityPage({ prefilledReport, onFormSubmit }: CommunityPagePr
     setNewReport(prev => ({...prev, rating: value[0]}));
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newReport.title || !newReport.url || !newReport.comment) return;
 
     setIsSubmitting(true);
-    await addReport(newReport);
-    setIsSubmitting(false);
+    addReport(newReport);
     
+    // Reset form immediately for better UX
     setNewReport({ title: '', url: '', comment: '', rating: 5 });
+    setIsSubmitting(false);
 
     if (onFormSubmit) {
       onFormSubmit();
     }
   };
-
 
   return (
     <div className="w-full max-w-3xl animate-in fade-in zoom-in-95 space-y-8">

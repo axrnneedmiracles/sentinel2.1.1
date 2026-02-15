@@ -36,20 +36,16 @@ export function CommunityProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   
   const reportsCollection = firestore ? collection(firestore as Firestore, 'reports') : null;
-  // We fetch all to handle admin view. For a large app, we'd use separate queries.
   const reportsQuery = reportsCollection ? query(reportsCollection, orderBy('time', 'desc')) : null;
   
   const [reportsSnapshot, loading, error] = useCollection(reportsQuery);
 
   const allReports = reportsSnapshot ? reportsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Report)) : [];
   
-  // Publicly visible reports (Approved)
   const reports = allReports.filter(r => r.isApproved);
-  
-  // Admin only view (Pending)
   const pendingReports = allReports.filter(r => !r.isApproved);
 
-  const addReport = useCallback(async (reportData: ReportFormData) => {
+  const addReport = useCallback((reportData: ReportFormData) => {
     if (!firestore) {
         toast({
             variant: 'destructive',
@@ -58,71 +54,68 @@ export function CommunityProvider({ children }: { children: ReactNode }) {
         });
         return;
     }
-    try {
-      const reportsCollection = collection(firestore, 'reports');
-      await addDoc(reportsCollection, {
-        ...reportData,
-        author: 'Anonymous',
-        time: serverTimestamp(),
-        isApproved: false, // Default to false for moderation
-      });
+
+    const reportsCollection = collection(firestore, 'reports');
+    addDoc(reportsCollection, {
+      ...reportData,
+      author: 'Anonymous',
+      time: serverTimestamp(),
+      isApproved: false,
+    })
+    .then(() => {
       toast({
         title: 'Report Submitted',
         description: 'Thank you! Your report is waiting for approval from an admin.',
       });
-    } catch (e) {
+    })
+    .catch((e) => {
       console.error('Error adding report:', e);
       toast({
         variant: 'destructive',
         title: 'Submission Error',
         description: 'Could not submit your report. Please try again.',
       });
-    }
+    });
   }, [firestore, toast]);
 
-  const approveReport = useCallback(async (reportId: string) => {
+  const approveReport = useCallback((reportId: string) => {
     if (!firestore) return;
-    try {
-      const reportRef = doc(firestore, 'reports', reportId);
-      await updateDoc(reportRef, { isApproved: true });
+    const reportRef = doc(firestore, 'reports', reportId);
+    updateDoc(reportRef, { isApproved: true })
+    .then(() => {
       toast({
         title: 'Report Approved',
         description: 'The report is now live in the community section.',
       });
-    } catch (e) {
+    })
+    .catch((e) => {
       console.error('Error approving report:', e);
       toast({
         variant: 'destructive',
         title: 'Approval Error',
         description: 'Could not approve the report.',
       });
-    }
+    });
   }, [firestore, toast]);
 
-  const deleteReport = useCallback(async (reportId: string) => {
-     if (!firestore) {
-        toast({
-            variant: 'destructive',
-            title: 'Connection Error',
-            description: 'Cannot connect to the database. Please try again.',
-        });
-        return;
-    }
-    try {
-      const reportRef = doc(firestore, 'reports', reportId);
-      await deleteDoc(reportRef);
+  const deleteReport = useCallback((reportId: string) => {
+     if (!firestore) return;
+    const reportRef = doc(firestore, 'reports', reportId);
+    deleteDoc(reportRef)
+    .then(() => {
       toast({
         title: 'Report Removed',
         description: 'The report has been deleted.',
       });
-    } catch (e) {
+    })
+    .catch((e) => {
       console.error('Error deleting report:', e);
       toast({
         variant: 'destructive',
         title: 'Deletion Error',
         description: 'Could not delete the report. Please try again.',
       });
-    }
+    });
   }, [firestore, toast]);
   
   const value = { reports, pendingReports, addReport, approveReport, deleteReport, loading, error };
